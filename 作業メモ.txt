@@ -1,0 +1,26 @@
+# nouns-monorepoからclone
+git clone https://github.com/nounsDAO/nouns-monorepo.git
+
+# リモートリポジトリ参照
+git remote -v
+
+# リモートリポジトリを削除
+git remote remove origin
+
+# githubで自分のリモートリポジトリを作成
+https://github.com/EibaKatsu/LocalNouns-monorepo
+
+# リモートリポジトリの切り替え
+git remote add origin https://github.com/EibaKatsu/LocalNouns-monorepo.git
+
+# ブランチの作成
+git branch -M main
+
+# ブランチにpush
+git push -u origin main
+
+# ブランチを作成して切り替え
+git checkout -b eiba20230507_01
+
+# リモートリポジトリへ共有
+git push -u origin eiba20230507_01
