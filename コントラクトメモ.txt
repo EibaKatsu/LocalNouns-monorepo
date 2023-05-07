@@ -1,0 +1,20 @@
+
+## NounsToken.sol
+ERC721
+
+## NounsDescripterV2.sol
+NounsDescripter.solの後継
+NounsDescripterでは、body,accessories,head,glasses,backgroundを自らの変数で定義していたが、NounsArt.solで定義するよう変更
+
+## NounsSeeder.sol
+引数で指定されたNounIDから、body,accessories,head,glasses,backgroundのパーツ番号を特定している
+
+## NounsArt.sol
+各パーツのデータを保存
+
+## SVGRenderer.sol
+パーツのデータからSVGイメージを作成
+
+## Inflator.sol
+？？
+

@@ -24,3 +24,6 @@ git checkout -b eiba20230507_01
 
 # リモートリポジトリへ共有
 git push -u origin eiba20230507_01
+
+# SVG生成コントラクトデプロイのtask
+npx hardhat deploy-descriptor-v2 --daoExecutor 0x52A76a606AC925f7113B4CC8605Fe6bCad431EbB --network goerli
