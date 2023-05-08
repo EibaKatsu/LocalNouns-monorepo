@@ -1,6 +1,6 @@
 import { task, types } from 'hardhat/config';
-import ImageData from '../files/image-data-v2.json';
-import { dataToDescriptorInput } from './utils';
+// import ImageData from '../files/image-data-v2.json';
+// import { dataToDescriptorInput } from './utils';
 
 task('output-sample-images', 'Output sample images')
   .addOptionalParam(
@@ -15,7 +15,13 @@ task('output-sample-images', 'Output sample images')
     '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
     types.string,
   )
-  .setAction(async ({ nftDescriptor, nounsDescriptor }, { ethers, network }) => {
+  .addOptionalParam(
+    'nounsSeeder',
+    'The `NounsSeeder` contract address',
+    '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+    types.string,
+  )
+  .setAction(async ({ nftDescriptor, nounsDescriptor, nounsSeeder }, { ethers, network }) => {
     const options = { gasLimit: network.name === 'hardhat' ? 30000000 : undefined };
 
     const descriptorFactory = await ethers.getContractFactory('NounsDescriptorV2', {
@@ -24,42 +30,47 @@ task('output-sample-images', 'Output sample images')
       },
     });
     const descriptorContract = descriptorFactory.attach(nounsDescriptor);
+    
+    const seederFactory = await ethers.getContractFactory('NounsSeeder');
+    const seederContract = seederFactory.attach;
+    
+    console.log("test-bodyCount:",await descriptorContract.bodyCount());
 
-    const { bgcolors, palette, images } = ImageData;
-    const { bodies, accessories, heads, glasses } = images;
+    // const { bgcolors, palette, images } = ImageData;
+    // const { bodies, accessories, heads, glasses } = images;
 
-    const bodiesPage = dataToDescriptorInput(bodies.map(({ data }) => data));
-    const headsPage = dataToDescriptorInput(heads.map(({ data }) => data));
-    const glassesPage = dataToDescriptorInput(glasses.map(({ data }) => data));
-    const accessoriesPage = dataToDescriptorInput(accessories.map(({ data }) => data));
+    // const bodiesPage = dataToDescriptorInput(bodies.map(({ data }) => data));
+    // const headsPage = dataToDescriptorInput(heads.map(({ data }) => data));
+    // const glassesPage = dataToDescriptorInput(glasses.map(({ data }) => data));
+    // const accessoriesPage = dataToDescriptorInput(accessories.map(({ data }) => data));
 
-    await descriptorContract.addManyBackgrounds(bgcolors);
-    await descriptorContract.setPalette(0, `0x000000${palette.join('')}`);
+    // await descriptorContract.addManyBackgrounds(bgcolors);
+    // await descriptorContract.setPalette(0, `0x000000${palette.join('')}`);
 
-    await descriptorContract.addBodies(
-      bodiesPage.encodedCompressed,
-      bodiesPage.originalLength,
-      bodiesPage.itemCount,
-      options,
-    );
-    await descriptorContract.addHeads(
-      headsPage.encodedCompressed,
-      headsPage.originalLength,
-      headsPage.itemCount,
-      options,
-    );
-    await descriptorContract.addGlasses(
-      glassesPage.encodedCompressed,
-      glassesPage.originalLength,
-      glassesPage.itemCount,
-      options,
-    );
-    await descriptorContract.addAccessories(
-      accessoriesPage.encodedCompressed,
-      accessoriesPage.originalLength,
-      accessoriesPage.itemCount,
-      options,
-    );
+    // await descriptorContract.addBodies(
+    //   bodiesPage.encodedCompressed,
+    //   bodiesPage.originalLength,
+    //   bodiesPage.itemCount,
+    //   options,
+    // );
+    // await descriptorContract.addHeads(
+    //   headsPage.encodedCompressed,
+    //   headsPage.originalLength,
+    //   headsPage.itemCount,
+    //   options,
+    // );
+    // await descriptorContract.addGlasses(
+    //   glassesPage.encodedCompressed,
+    //   glassesPage.originalLength,
+    //   glassesPage.itemCount,
+    //   options,
+    // );
+    // await descriptorContract.addAccessories(
+    //   accessoriesPage.encodedCompressed,
+    //   accessoriesPage.originalLength,
+    //   accessoriesPage.itemCount,
+    //   options,
+    // );
 
-    console.log('Descriptor populated with palettes and parts.');
+    console.log('Finish output sample imases.');
   });
