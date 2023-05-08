@@ -83,6 +83,15 @@ task('deploy-descriptor-v2', 'Deploy NounsDescriptorV2 & populate it with art')
       libraries: {},
     };
 
+    const nounsSeeder = await (await ethers.getContractFactory('NounsSeeder', deployer)).deploy();
+    contracts.NounsSeeder = {
+      name: 'NounsSeeder',
+      address: nounsSeeder.address,
+      instance: nounsSeeder,
+      constructorArguments: [],
+      libraries: {},
+    };
+
     console.log('Waiting for contracts to be deployed');
     for (const c of Object.values<DeployedContract>(contracts)) {
       console.log(`Waiting for ${c.name} to be deployed`);
