@@ -6,22 +6,28 @@ task('output-sample-images', 'Output sample images')
   .addOptionalParam(
     'nftDescriptor',
     'The `NFTDescriptorV2` contract address',
-    '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    '0x46b142DD1E924FAb83eCc3c08e4D46E82f005e0E',
     types.string,
   )
   .addOptionalParam(
     'nounsDescriptor',
     'The `NounsDescriptorV2` contract address',
-    '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+    '0x1c85638e118b37167e9298c2268758e058DdfDA0',
     types.string,
   )
   .addOptionalParam(
     'nounsSeeder',
     'The `NounsSeeder` contract address',
-    '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+    '0x7A9Ec1d04904907De0ED7b6839CcdD59c3716AC9',
     types.string,
   )
-  .setAction(async ({ nftDescriptor, nounsDescriptor, nounsSeeder }, { ethers, network }) => {
+  .addOptionalParam(
+    'localNounsToken',
+    'The `LocalNounsToken` contract address',
+    '0x49fd2BE640DB2910c2fAb69bB8531Ab6E76127ff',
+    types.string,
+  )
+  .setAction(async ({ nftDescriptor, nounsDescriptor, nounsSeeder,localNounsToken }, { ethers, network }) => {
     const options = { gasLimit: network.name === 'hardhat' ? 30000000 : undefined };
 
     const [deployer] = await ethers.getSigners();
@@ -36,8 +42,12 @@ task('output-sample-images', 'Output sample images')
     const seederFactory = await ethers.getContractFactory('NounsSeeder');
     const seederContract = seederFactory.attach(nounsSeeder);
     
+    const tokenFactory = await ethers.getContractFactory('LocalNounsToken');
+    const tokenContract = tokenFactory.attach(localNounsToken);
+
     const seed = await seederContract.generateSeed(1, descriptorContract.address);
 
+    console.log("test-tokenName:",await tokenContract.name());
     console.log("test-seed:",seed);
 
     // console.log("test-svg:",await descriptorContract.generateSVGImage((1,5,77,6,14));

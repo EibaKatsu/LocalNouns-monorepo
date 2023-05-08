@@ -96,7 +96,6 @@ task('deploy-descriptor-v2', 'Deploy NounsDescriptorV2 & populate it with art')
       libraries: {},
     };
 
-    console.log('start localNounsToken');
     const localNounsToken = await (await ethers.getContractFactory('LocalNounsToken', deployer)).deploy(deployer.address, deployer.address, nounsDescriptor.address, nounsSeeder.address, AddressZero);
     contracts.LocalNounsToken = {
       name: 'LocalNounsToken',
@@ -105,7 +104,6 @@ task('deploy-descriptor-v2', 'Deploy NounsDescriptorV2 & populate it with art')
       constructorArguments: [deployer.address, deployer.address, nounsDescriptor.address, nounsSeeder.address, AddressZero],
       libraries: {},
     };
-    console.log('finish localNounsToken');
 
     console.log('Waiting for contracts to be deployed');
     for (const c of Object.values<DeployedContract>(contracts)) {
