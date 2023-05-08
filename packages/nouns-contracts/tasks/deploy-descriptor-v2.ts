@@ -1,6 +1,9 @@
 import { task } from 'hardhat/config';
-import { ContractName, DeployedContract } from './types';
+import { ContractName, DeployedContract, ChainId } from './types';
 import { printContractsTable } from './utils';
+import { isNull } from 'util';
+
+const AddressZero = "0x0000000000000000000000000000000000000000";
 
 async function delay(seconds: number) {
   return new Promise(resolve => setTimeout(resolve, 1000 * seconds));
@@ -12,6 +15,7 @@ task('deploy-descriptor-v2', 'Deploy NounsDescriptorV2 & populate it with art')
     'The address of the NounsDAOExecutor that should be the owner of the descriptor.',
   )
   .setAction(async ({ daoExecutor }, { ethers, run, network }) => {
+
     const contracts: Record<ContractName, DeployedContract> = {} as Record<
       ContractName,
       DeployedContract
@@ -91,6 +95,17 @@ task('deploy-descriptor-v2', 'Deploy NounsDescriptorV2 & populate it with art')
       constructorArguments: [],
       libraries: {},
     };
+
+    console.log('start localNounsToken');
+    const localNounsToken = await (await ethers.getContractFactory('LocalNounsToken', deployer)).deploy(deployer.address, deployer.address, nounsDescriptor.address, nounsSeeder.address, AddressZero);
+    contracts.LocalNounsToken = {
+      name: 'LocalNounsToken',
+      address: localNounsToken.address,
+      instance: localNounsToken,
+      constructorArguments: [deployer.address, deployer.address, nounsDescriptor.address, nounsSeeder.address, AddressZero],
+      libraries: {},
+    };
+    console.log('finish localNounsToken');
 
     console.log('Waiting for contracts to be deployed');
     for (const c of Object.values<DeployedContract>(contracts)) {

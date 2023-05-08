@@ -91,7 +91,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
         ],
       },
       NounsSeeder: {},
-      NounsToken: {
+      LocalNounsToken: {
         args: [
           args.noundersdao || deployer.address,
           expectedAuctionHouseProxyAddress,
@@ -110,7 +110,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
           () => contracts.NounsAuctionHouseProxyAdmin.instance?.address,
           () =>
             new Interface(NounsAuctionHouseABI).encodeFunctionData('initialize', [
-              contracts.NounsToken.instance?.address,
+              contracts.LocalNounsToken.instance?.address,
               contracts.WETH.instance?.address,
               args.auctionTimeBuffer,
               args.auctionReservePrice,
@@ -128,7 +128,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
       NounsDAOProxyV2: {
         args: [
           () => contracts.NounsDAOExecutor.instance?.address,
-          () => contracts.NounsToken.instance?.address,
+          () => contracts.LocalNounsToken.instance?.address,
           args.noundersdao || deployer.address,
           () => contracts.NounsDAOExecutor.instance?.address,
           () => contracts.NounsDAOLogicV2.instance?.address,

@@ -135,13 +135,13 @@ task('deploy', 'Deploys NFTDescriptor, NounsDescriptor, NounsSeeder, and NounsTo
         args: [() => deployment.NounsDescriptorV2.address, () => deployment.Inflator.address],
       },
       NounsSeeder: {},
-      NounsToken: {
+      LocalNounsToken: {
         args: [
           args.noundersdao,
           expectedAuctionHouseProxyAddress,
           () => deployment.NounsDescriptorV2.address,
           () => deployment.NounsSeeder.address,
-          proxyRegistryAddress,
+          // proxyRegistryAddress,
         ],
       },
       NounsAuctionHouse: {
@@ -154,7 +154,7 @@ task('deploy', 'Deploys NFTDescriptor, NounsDescriptor, NounsSeeder, and NounsTo
           () => deployment.NounsAuctionHouseProxyAdmin.address,
           () =>
             new Interface(NounsAuctionHouseABI).encodeFunctionData('initialize', [
-              deployment.NounsToken.address,
+              deployment.LocalNounsToken.address,
               args.weth,
               args.auctionTimeBuffer,
               args.auctionReservePrice,
@@ -182,7 +182,7 @@ task('deploy', 'Deploys NFTDescriptor, NounsDescriptor, NounsSeeder, and NounsTo
       NounsDAOProxy: {
         args: [
           () => deployment.NounsDAOExecutor.address,
-          () => deployment.NounsToken.address,
+          () => deployment.LocalNounsToken.address,
           args.noundersdao,
           () => deployment.NounsDAOExecutor.address,
           () => deployment.NounsDAOLogicV1.address,

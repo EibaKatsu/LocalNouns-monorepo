@@ -132,7 +132,7 @@ task('deploy-short-times', 'Deploy all Nouns contracts with short gov times for 
         args: [() => deployment.NounsDescriptorV2.address, () => deployment.Inflator.address],
       },
       NounsSeeder: {},
-      NounsToken: {
+      LocalNounsToken: {
         args: [
           args.noundersdao,
           expectedAuctionHouseProxyAddress,
@@ -151,7 +151,7 @@ task('deploy-short-times', 'Deploy all Nouns contracts with short gov times for 
           () => deployment.NounsAuctionHouseProxyAdmin.address,
           () =>
             new Interface(NounsAuctionHouseABI).encodeFunctionData('initialize', [
-              deployment.NounsToken.address,
+              deployment.LocalNounsToken.address,
               args.weth,
               args.auctionTimeBuffer,
               args.auctionReservePrice,
@@ -179,7 +179,7 @@ task('deploy-short-times', 'Deploy all Nouns contracts with short gov times for 
       NounsDAOProxyV2: {
         args: [
           () => deployment.NounsDAOExecutor.address,
-          () => deployment.NounsToken.address,
+          () => deployment.LocalNounsToken.address,
           args.noundersdao,
           () => deployment.NounsDAOExecutor.address,
           () => deployment.NounsDAOLogicV2.address,

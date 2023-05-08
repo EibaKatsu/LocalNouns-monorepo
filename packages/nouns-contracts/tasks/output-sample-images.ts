@@ -24,6 +24,8 @@ task('output-sample-images', 'Output sample images')
   .setAction(async ({ nftDescriptor, nounsDescriptor, nounsSeeder }, { ethers, network }) => {
     const options = { gasLimit: network.name === 'hardhat' ? 30000000 : undefined };
 
+    const [deployer] = await ethers.getSigners();
+
     const descriptorFactory = await ethers.getContractFactory('NounsDescriptorV2', {
       libraries: {
         NFTDescriptorV2: nftDescriptor,
@@ -32,9 +34,15 @@ task('output-sample-images', 'Output sample images')
     const descriptorContract = descriptorFactory.attach(nounsDescriptor);
     
     const seederFactory = await ethers.getContractFactory('NounsSeeder');
-    const seederContract = seederFactory.attach;
+    const seederContract = seederFactory.attach(nounsSeeder);
     
-    console.log("test-bodyCount:",await descriptorContract.bodyCount());
+    const seed = await seederContract.generateSeed(1, descriptorContract.address);
+
+    console.log("test-seed:",seed);
+
+    // console.log("test-svg:",await descriptorContract.generateSVGImage((1,5,77,6,14));
+    console.log("test-svg:",await descriptorContract.generateSVGImage(seed));
+
 
     // const { bgcolors, palette, images } = ImageData;
     // const { bodies, accessories, heads, glasses } = images;

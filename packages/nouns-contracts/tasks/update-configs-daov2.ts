@@ -18,7 +18,7 @@ task('update-configs-daov2', 'Write the deployed addresses to the SDK and subgra
       const addressesPath = join(sdkPath, 'src/contract/addresses.json');
       const addresses = JSON.parse(readFileSync(addressesPath, 'utf8'));
       addresses[chainId] = {
-        nounsToken: contracts.NounsToken.address,
+        nounsToken: contracts.LocalNounsToken.address,
         nounsSeeder: contracts.NounsSeeder.address,
         nounsDescriptor: contracts.NounsDescriptorV2.address,
         nftDescriptor: contracts.NFTDescriptorV2.address,
@@ -45,8 +45,8 @@ task('update-configs-daov2', 'Write the deployed addresses to the SDK and subgra
       const subgraphConfig = {
         network,
         nounsToken: {
-          address: contracts.NounsToken.address,
-          startBlock: contracts.NounsToken.instance.deployTransaction.blockNumber,
+          address: contracts.LocalNounsToken.address,
+          startBlock: contracts.LocalNounsToken.instance.deployTransaction.blockNumber,
         },
         nounsAuctionHouse: {
           address: contracts.NounsAuctionHouseProxy.address,
