@@ -24,9 +24,9 @@ import { INounsSeeder } from '../interfaces/INounsSeeder.sol';
 import { INounsToken } from '../interfaces/INounsToken.sol';
 import { ERC721 } from '../base/ERC721.sol';
 import { IERC721 } from '@openzeppelin/contracts/token/ERC721/IERC721.sol';
-import { IProxyRegistry } from '../external/opensea/IProxyRegistry.sol';
+// import { IProxyRegistry } from '../external/opensea/IProxyRegistry.sol';
 
-contract NounsToken is INounsToken, Ownable, ERC721Checkpointable {
+contract LocalNounsToken is INounsToken, Ownable, ERC721Checkpointable {
     // The nounders DAO address (creators org)
     address public noundersDAO;
 
@@ -58,7 +58,7 @@ contract NounsToken is INounsToken, Ownable, ERC721Checkpointable {
     string private _contractURIHash = 'QmZi1n79FqWt2tTLwCqiy6nLM6xLGRsEPQ5JmReJQKNNzX';
 
     // OpenSea's Proxy Registry
-    IProxyRegistry public immutable proxyRegistry;
+    // IProxyRegistry public immutable proxyRegistry;
 
     /**
      * @notice Require that the minter has not been locked.
@@ -104,14 +104,15 @@ contract NounsToken is INounsToken, Ownable, ERC721Checkpointable {
         address _noundersDAO,
         address _minter,
         INounsDescriptorMinimal _descriptor,
-        INounsSeeder _seeder,
-        IProxyRegistry _proxyRegistry
-    ) ERC721('Nouns', 'NOUN') {
+        INounsSeeder _seeder
+        // ,
+        // IProxyRegistry _proxyRegistry
+    ) ERC721('LocalNouns', 'LNOUN') {
         noundersDAO = _noundersDAO;
         minter = _minter;
         descriptor = _descriptor;
         seeder = _seeder;
-        proxyRegistry = _proxyRegistry;
+        // proxyRegistry = _proxyRegistry;
     }
 
     /**
@@ -134,9 +135,9 @@ contract NounsToken is INounsToken, Ownable, ERC721Checkpointable {
      */
     function isApprovedForAll(address owner, address operator) public view override(IERC721, ERC721) returns (bool) {
         // Whitelist OpenSea proxy contract for easy trading.
-        if (proxyRegistry.proxies(owner) == operator) {
-            return true;
-        }
+        // if (proxyRegistry.proxies(owner) == operator) {
+        //     return true;
+        // }
         return super.isApprovedForAll(owner, operator);
     }
 
