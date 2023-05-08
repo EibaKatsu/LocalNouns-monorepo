@@ -33,3 +33,6 @@ npx hardhat node
 
 # SVG生成コントラクトデプロイのtask
 npx hardhat deploy-descriptor-v2 --dao-executor 0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199 --localhost
+
+# SVG生成タスク
+npx hardhat output-sample-images --network localhost --nouns-descriptor 0x09635F643e140090A9A8Dcd712eD6285858ceBef --nft-descriptor 0x4A679253410272dd5232B3Ff7cF5dbB88f295319 --nouns-seeder 0xE6E340D132b5f46d1e472DebcD681B2aBc16e57E
