@@ -1,4 +1,5 @@
 import { task, types } from 'hardhat/config';
+import { BigNumber } from 'ethers';
 // import ImageData from '../files/image-data-v2.json';
 // import { dataToDescriptorInput } from './utils';
 
@@ -6,28 +7,28 @@ task('output-sample-images', 'Output sample images')
   .addOptionalParam(
     'nftDescriptor',
     'The `NFTDescriptorV2` contract address',
-    '0x46b142DD1E924FAb83eCc3c08e4D46E82f005e0E',
+    '0x5FbDB2315678afecb367f032d93F642f64180aa3',
     types.string,
   )
   .addOptionalParam(
     'nounsDescriptor',
     'The `NounsDescriptorV2` contract address',
-    '0x1c85638e118b37167e9298c2268758e058DdfDA0',
+    '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
     types.string,
   )
   .addOptionalParam(
     'nounsSeeder',
     'The `NounsSeeder` contract address',
-    '0x7A9Ec1d04904907De0ED7b6839CcdD59c3716AC9',
+    '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
     types.string,
   )
   .addOptionalParam(
     'localNounsToken',
     'The `LocalNounsToken` contract address',
-    '0x49fd2BE640DB2910c2fAb69bB8531Ab6E76127ff',
+    '0x0165878A594ca255338adfa4d48449f69242Eb8F',
     types.string,
   )
-  .setAction(async ({ nftDescriptor, nounsDescriptor, nounsSeeder,localNounsToken }, { ethers, network }) => {
+  .setAction(async ({ nftDescriptor, nounsDescriptor, nounsSeeder, localNounsToken }, { ethers, network }) => {
     const options = { gasLimit: network.name === 'hardhat' ? 30000000 : undefined };
 
     const [deployer] = await ethers.getSigners();
@@ -38,57 +39,28 @@ task('output-sample-images', 'Output sample images')
       },
     });
     const descriptorContract = descriptorFactory.attach(nounsDescriptor);
-    
-    const seederFactory = await ethers.getContractFactory('NounsSeeder');
-    const seederContract = seederFactory.attach(nounsSeeder);
-    
+
+    // const seederFactory = await ethers.getContractFactory('NounsSeeder');
+    // const seederContract = seederFactory.attach(nounsSeeder);
+
     const tokenFactory = await ethers.getContractFactory('LocalNounsToken');
     const tokenContract = tokenFactory.attach(localNounsToken);
 
-    const seed = await seederContract.generateSeed(1, descriptorContract.address);
+    tokenContract.on('Transfer', (from, to, tokenId) => {
+      console.log('Minted token ID:', tokenId.toString(), 'From:',from, "To:",to);
+    });
 
-    console.log("test-tokenName:",await tokenContract.name());
-    console.log("test-seed:",seed);
+    // const seed = await seederContract.generateSeed(1, descriptorContract.address);
+    // const tx = await tokenContract.mint();
+    // await tx.wait();
+    console.log('ownerOf:', await tokenContract.ownerOf(BigNumber.from(1)) );
+    console.log('tokenURI:', await tokenContract.tokenURI(BigNumber.from(1)) );
+    // console.log('tokenURI:', await tokenContract.tokenURI(BigNumber.from(1),{gasLimit: 1_000_000}) );
+
+    // console.log("test-minter:",await tokenContract.tokenURI(BigNumber.from(tokenId)));
 
     // console.log("test-svg:",await descriptorContract.generateSVGImage((1,5,77,6,14));
-    console.log("test-svg:",await descriptorContract.generateSVGImage(seed));
-
-
-    // const { bgcolors, palette, images } = ImageData;
-    // const { bodies, accessories, heads, glasses } = images;
-
-    // const bodiesPage = dataToDescriptorInput(bodies.map(({ data }) => data));
-    // const headsPage = dataToDescriptorInput(heads.map(({ data }) => data));
-    // const glassesPage = dataToDescriptorInput(glasses.map(({ data }) => data));
-    // const accessoriesPage = dataToDescriptorInput(accessories.map(({ data }) => data));
-
-    // await descriptorContract.addManyBackgrounds(bgcolors);
-    // await descriptorContract.setPalette(0, `0x000000${palette.join('')}`);
-
-    // await descriptorContract.addBodies(
-    //   bodiesPage.encodedCompressed,
-    //   bodiesPage.originalLength,
-    //   bodiesPage.itemCount,
-    //   options,
-    // );
-    // await descriptorContract.addHeads(
-    //   headsPage.encodedCompressed,
-    //   headsPage.originalLength,
-    //   headsPage.itemCount,
-    //   options,
-    // );
-    // await descriptorContract.addGlasses(
-    //   glassesPage.encodedCompressed,
-    //   glassesPage.originalLength,
-    //   glassesPage.itemCount,
-    //   options,
-    // );
-    // await descriptorContract.addAccessories(
-    //   accessoriesPage.encodedCompressed,
-    //   accessoriesPage.originalLength,
-    //   accessoriesPage.itemCount,
-    //   options,
-    // );
+    // console.log("test-svg:",await descriptorContract.generateSVGImage(seed));
 
     console.log('Finish output sample imases.');
   });
