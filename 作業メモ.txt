@@ -28,11 +28,32 @@ git push -u origin eiba20230507_01
 # .envの作成
 略
 
-# hardhat起動
+# hardhatローカル起動
 npx hardhat node
 
+# コンパイル
+yarn build:sol
+
 # SVG生成コントラクトデプロイのtask
-npx hardhat deploy-descriptor-v2 --dao-executor 0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199 --localhost
+npx hardhat deploy-descriptor-v2 --dao-executor 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 --network localhost
+npx hardhat deploy-descriptor-v2 --dao-executor 0x52A76a606AC925f7113B4CC8605Fe6bCad431EbB --network goerli
+
+# populate (テスト用)
+npx hardhat populate-descriptor --nft-descriptor 0x97c82f1c82091F9fC86bd2008b48286d14A38D15 --nouns-descriptor 0x9E6aC85469E8E6ee53ACE807C967f60ACa6B9555 --network goerli
 
 # SVG生成タスク
 npx hardhat output-sample-images --network localhost --nouns-descriptor 0x09635F643e140090A9A8Dcd712eD6285858ceBef --nft-descriptor 0x4A679253410272dd5232B3Ff7cF5dbB88f295319 --nouns-seeder 0xE6E340D132b5f46d1e472DebcD681B2aBc16e57E
+
+
+# 2023/5/11 goerli deploy
+┌───────────────────┬──────────────────────────────────────────────┬──────────────────────────────────────────────────────────────────────┐
+│      (index)      │                   Address                    │                           Deployment Hash                            │
+├───────────────────┼──────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────┤
+│  NFTDescriptorV2  │ '0x97c82f1c82091F9fC86bd2008b48286d14A38D15' │ '0x037cf8c7de6821015ee15b0a97e61f93570b71f9d737bcca87279a3abe335193' │
+│    SVGRenderer    │ '0x6226aBda129029b4485C02594BCB7cadC495208A' │ '0x8bfa7d1d9f62cca156d1a36074a5c236458e5a6e9f81dac5cb6d929023b250b6' │
+│ NounsDescriptorV2 │ '0x9E6aC85469E8E6ee53ACE807C967f60ACa6B9555' │ '0xefbe86d5fc46316a84c0f0e84ec77b9234177564d0633478d8df39e4a0e0ecc8' │
+│     Inflator      │ '0xBc622bA8D446b3540bf94DB272a0d6c71FB0fB5d' │ '0xc11ac853387e16f911ca1bcb2a2ead86ac0b24a7100e0dd906956c180c4403d6' │
+│     NounsArt      │ '0x03922a6a90A455b33A258ad985f1Ef0F2cF37334' │ '0xab65954392bd965c05cad6b44225b5cfe147370b5de83f11ebdd9904a4c12498' │
+│    NounsSeeder    │ '0xA1641240Ef33D181BECFFEe52C59db1338095Fb7' │ '0x643bb1957de883b4e1a3c844726cc86e46fbf63a46a68e12adc8bc929090f160' │
+│  LocalNounsToken  │ '0x9E6aC85469E8E6ee53ACE807C967f60ACa6B9555' │ '0xefbe86d5fc46316a84c0f0e84ec77b9234177564d0633478d8df39e4a0e0ecc8' │
+└───────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────┘
