@@ -18,3 +18,11 @@ NounsDescripterでは、body,accessories,head,glasses,backgroundを自らの変�
 ## Inflator.sol
 ？？
 
+## 構想
+NounsToken.solをLocalNounsToken.solに変更
+mint()時の引数に都道府県番号を指定できるようにする。
+（都道府県のランダム性、あるいは指定可能とするか？などはMinter用のコントラクトを作成して、そちらで管理する。
+
+mapping(uint258 => uint256[]) prefectureHeads;
+mapping(uint258 => uint256[]) prefectureAccesoriis;
+のマップ配列を作って、指定された都道府県内でヘッド／アクセサリをランダムで設定する
